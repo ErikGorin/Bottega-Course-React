@@ -1,3 +1,4 @@
+import axios from "axios";
 import React , { Component } from "react"
 
 export default class PortfolioForm extends Component{
@@ -15,15 +16,43 @@ export default class PortfolioForm extends Component{
             logo: ""
         }
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    buildForm(){
+        let formData = new FormData();
+        formData.append("portfolio_items[name]",this.state.name);
+        formData.append("portfolio_items[description]",this.state.description);
+        formData.append("portfolio_items[url]",this.state.url);
+        formData.append("portfolio_items[category]",this.state.category);
+        formData.append("portfolio_items[position]",this.state.posision);
+
+        return formData;
     }
     handleChange(event){
-        console.log("handle change", event)
+        this.setState({
+            [event.target.name]: event.target.value
+        })
     }
+    handleSubmit(event){
+        axios.post(
+            "https://jordan.devcamp.space/portfolio/portfolio_items",
+            this.buildForm(),
+            {withCredentials: true}
+        ).then(response=>{
+            console.log("response", response);
+        }).catch(error =>{
+            console.log("portfolio form handleSubmit error", error);
+        });
+        
+        event.preventDefault();
+    }
+
     render(){
         return(
             <div>
                 <h1>PortfolioForm</h1>
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <div>
                         <input type="text"
                                 name="name"
