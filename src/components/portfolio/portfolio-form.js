@@ -4,6 +4,7 @@ import DropzoneComponent from "react-dropzone-component";
 
 import "../../../node_modules/react-dropzone-component/styles/filepicker.css";
 import "../../../node_modules/dropzone/dist/min/dropzone.min.css";
+import { faRupiahSign } from "@fortawesome/free-solid-svg-icons";
 
 export default class PortfolioForm extends Component {
   constructor(props) {
@@ -17,7 +18,10 @@ export default class PortfolioForm extends Component {
       url: "",
       thumb_image: "",
       banner_image: "",
-      logo: ""
+      logo: "",
+      editMode: false,
+      apiUrl: "https://karl.devcamp.space/portfolio/portfolio_items",
+      urlAction: 'post'
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -55,6 +59,9 @@ export default class PortfolioForm extends Component {
         category:category || "eCommerce",
         position: position || "",
         url: url || "",
+        editMode: true,
+        apiUrl: `https://karl.devcamp.space/portfolio/portfolio_items/${id}`,
+        urlAction: "patch"
       })
     }
   }
@@ -123,15 +130,19 @@ export default class PortfolioForm extends Component {
   }
 
   handleSubmit(event) {
-    axios
-      .post(
-        "https://karl.devcamp.space/portfolio/portfolio_items",
-        this.buildForm(),
-        { withCredentials: true }
-      )
+    axios({
+      method: this.state.apiAction,
+      url:this.state.apiUrl,
+      data: this.state.buildForm(),
+      withCredentials: true
+    })
       .then(response => {
-        this.props.handleSuccessfulFormSubmission(response.data.portfolio_item);
-
+        if(this.state.editMode){
+          this.props.handleEditFormSubmission();
+        }else{
+          this.props.handleNewFormSubmission(response.data.portfolio_item);
+        }
+        
         this.setState({
           name: "",
           description: "",
@@ -140,7 +151,10 @@ export default class PortfolioForm extends Component {
           url: "",
           thumb_image: "",
           banner_image: "",
-          logo: ""
+          logo: "",
+          editMode: false,
+          apiUrl: "https://karl.devcamp.space/portfolio/portfolio_items",
+          urlAction: 'post'
         });
 
         [this.thumbRef, this.bannerRef, this.logoRef].forEach(ref => {

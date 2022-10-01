@@ -3,8 +3,11 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import axios from "axios";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faSignOutAlt, faEdit } from "@fortawesome/free-solid-svg-icons";
-
+import {
+  faTrash,
+  faSignOutAlt,
+  faEdit
+} from "@fortawesome/free-solid-svg-icons";
 
 import NavigationContainer from "./navigation/navigation-container";
 import Home from "./pages/home";
@@ -80,10 +83,13 @@ export default class App extends Component {
   }
 
   authorizedPages() {
-    return [<Route 
-      key="portfolio-manager"
-      path="/portfolio-manager" 
-      component={PortfolioManager} />];
+    return [
+      <Route
+        key="portfolio-manager"
+        path="/portfolio-manager"
+        component={PortfolioManager}
+      />
+    ];
   }
 
   render() {
