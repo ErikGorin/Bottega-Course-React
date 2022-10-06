@@ -31,18 +31,18 @@ export default class PortfolioItem extends Component{
                 />
                  {/* <img src={thumb_image_url}></img> */}
                 {/* 
-                <dev>{description}</dev>
+                <div>{description}</div>
                 <Link to={`/portfolio/${id}`}>Link</Link>  */}
                
 
-                <dev className="img-text-wrapper">
+                <div className="img-text-wrapper">
                     <div className="logo-wrapper">
                         <img src={logo_url}></img>
                         <div className="subtitle">
                             {description}    
                         </div>  
                     </div>
-                </dev>
+                </div>
             </div>
         )
     }
